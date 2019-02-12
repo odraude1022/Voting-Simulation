@@ -75,45 +75,109 @@ function voterVote(voter)
   {
     if(number <= 60)
     {
-      candidateVote('Republican');
+      if(republicanCandidates.length === 0)
+      {
+        voterVote(voter);
+      }
+      else
+      {
+        candidateVote('Republican');
+      }
     }
     else if(number <= 80)
     {
-      candidateVote('Independent');
+      if(independentCandidates.length === 0)
+      {
+        voterVote(voter)
+      }
+      else
+      {
+        candidateVote('Independent');
+      }
     }
     else
     {
-      candidateVote('Democrat');
+      if(democratCandidates.length === 0)
+      {
+        voterVote(voter);
+      }
+      else
+      {
+        candidateVote('Democrat');
+      }
     }
   }
   else if(voter.ideology === 'Liberal')
   {
     if(number <= 60)
     {
-      candidateVote('Democrat');
+      if(democratCandidates.length === 0)
+      {
+        voterVote(voter);
+      }
+      else
+      {
+        candidateVote('Democrat');
+      }
     }
     else if(number <= 80)
     {
-      candidateVote('Independent');
+      if(independentCandidates.length === 0)
+      {
+        voterVote(voter);
+      }
+      else
+      {
+        candidateVote('Independent');
+      }
+
     }
     else
     {
-      candidateVote('Republican');
+      if(republicanCandidates.length === 0)
+      {
+        voterVote(voter);
+      }
+      else
+      {
+        candidateVote('Republican');
+      }
     }
   }
   else
   {
     if(number <= 50)
     {
-      candidateVote('Independent');
+      if(independentCandidates.length === 0)
+      {
+        voterVote(voter);
+      }
+      else
+      {
+        candidateVote('Independent');
+      }
     }
     else if(number <= 75)
     {
-      candidateVote('Republican');
+      if(republicanCandidates.length === 0)
+      {
+        voterVote(voter);
+      }
+      else
+      {
+        candidateVote('Republican');
+      }
     }
     else
     {
-      candidateVote('Democrat');
+      if(democratCandidates.length === 0)
+      {
+        voterVote(voter);
+      }
+      else
+      {
+        candidateVote('Democrat');
+      }
     }
   }
 }
@@ -124,24 +188,53 @@ function count()
   let allCandidates = republicanCandidates.concat(democratCandidates);
   allCandidates = allCandidates.concat(independentCandidates);
   let length = allCandidates.length;
+
   for (let i = 0; i < length; i++)
   {
     if(allCandidates[i].votes >= max)
     {
-      winner = allCandidates[i];
       max = allCandidates[i].votes;
     }
   }
-  window.alert(winner.name + ' is the winner!');
+  let winners = [];
+
+  for (var i = 0; i < length; i++)
+  {
+    if(allCandidates[i].votes === max)
+    {
+      winners.push(allCandidates[i]);
+    }
+  }
+  if(winners.length === 1)
+  {
+    window.alert(winners[0].name + ' is the winner!');
+  }
+  else
+  {
+    string = `The result is a tie between the following:\n`;
+    for(let i = 0; i < winners.length; i++)
+    {
+      string += winners[i].name + '\n';
+    }
+    window.alert(string);
+
+  }
+  for (var i = 0; i < length; i++)
+  {
+    allCandidates[i].votes = 0;
+  }
 }
 function vote()
 {
-  let length = voters.length;
-  for(let i = 0; i < length; i++)
+  if(!(republicanCandidates.length === 0 && democratCandidates.length === 0 && independentCandidates === 0))
   {
-    voterVote(voters[i]);
+    let length = voters.length;
+    for(let i = 0; i < length; i++)
+    {
+      voterVote(voters[i]);
+    }
+    count();
   }
-  count();
 }
 
 
@@ -167,7 +260,6 @@ $(`#vote-btn-div button`).click( (event) => {
 })
 
 $(`#randomize-btn`).click( (event) => {
-    console.log(`thing`);
     event.preventDefault();
     number = Math.floor(Math.random() * 3);
     name = faker.name.findName();
